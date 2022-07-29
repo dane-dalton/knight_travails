@@ -1,0 +1,2 @@
+# knight_travails
+In the game of chess, a knight can move to any square on the board if it has enough moves. In this repo, I am going to find the quickest way for a knight to get from one square to another. Tracking all of the knights moves in a tree, then performing either a BFS or DFS to traverse the tree and find the shortest path. I will likely be using a BFS since we are looking at moves that end on the shortest level in the level order search.
