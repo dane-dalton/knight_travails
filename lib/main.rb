@@ -1,10 +1,11 @@
 class Square
 
-  attr_accessor :position, :moves
+  attr_accessor :position, :moves, :parent
 
   def initialize(position)
     @position = position
     @moves = []
+    @parent = nil
   end
 end
 
@@ -19,9 +20,9 @@ class KnightGraph
     @finish = finish
   end
 
-  def move_set(start, finish, counter = 6)
-    return 1 if start == finish
-    return if counter == 0
+  def move_set(start, finish, counter = 2, square = nil)
+    return square if start == finish
+    return square if counter == 0
     square = Square.new(start)
     valid_moves = []
     @@ALL_MOVES.each do |move|
@@ -32,8 +33,16 @@ class KnightGraph
       end
     end
     counter -= 1
+
     valid_moves.each do |move|
-      square.moves << move_set(move, finish, counter)
+      square.moves << move_set(move, finish, counter, square)
+    end
+    # p square
+    unless square.moves[0].is_a?(Array)
+      square.moves.each do |move|
+        # p move
+        move.parent = square
+      end
     end
     return square
   end
@@ -43,12 +52,13 @@ class KnightGraph
     queue << @graph
 
     queue.each do |square|
-      p square
       square.moves.each do |move|
-        return p "TEST RETURN" if move == 1
+        return "TEST RETURN" if move == 1
         queue << move
       end
     end
+
+    return queue
   end
 end
 
