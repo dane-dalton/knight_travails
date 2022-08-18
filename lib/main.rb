@@ -20,9 +20,10 @@ class KnightGraph
     @finish = finish
   end
 
-  def move_set(start, finish, counter = 2, square = nil)
-    return square if start == finish
-    return square if counter == 0
+  def move_set(start, finish, counter = 5)
+    return Square.new(start) if start == finish
+    return Square.new(start) if counter == 0
+    counter -= 1
     square = Square.new(start)
     valid_moves = []
     @@ALL_MOVES.each do |move|
@@ -32,15 +33,15 @@ class KnightGraph
         valid_moves << [add_x, add_y]
       end
     end
-    counter -= 1
 
     valid_moves.each do |move|
-      square.moves << move_set(move, finish, counter, square)
+      square.moves << move_set(move, finish, counter)
     end
     # p square
     unless square.moves[0].is_a?(Array)
       square.moves.each do |move|
         # p move
+        puts "mommy"
         move.parent = square
       end
     end
@@ -53,12 +54,12 @@ class KnightGraph
 
     queue.each do |square|
       square.moves.each do |move|
-        return "TEST RETURN" if move == 1
+        return move.position if move.moves == []
         queue << move
       end
     end
 
-    return queue
+    return nil
   end
 end
 
@@ -74,5 +75,5 @@ def knight_moves(start, finish)
 
 end
 
-knight_graph = KnightGraph.new([1, 1], [3, 2])
+knight_graph = KnightGraph.new([1, 1], [0, 6])
 p knight_graph.bfs
