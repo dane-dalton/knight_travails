@@ -20,7 +20,7 @@ class KnightGraph
     @finish = finish
   end
 
-  def move_set(start, finish, counter = 5)
+  def move_set(start, finish, counter = 6)
     return Square.new(start) if start == finish
     return Square.new(start) if counter == 0
     counter -= 1
@@ -54,7 +54,7 @@ class KnightGraph
 
     queue.each do |square|
       square.moves.each do |move|
-        return move.position if move.moves == []
+        return move.position if move.position == self.finish
         queue << move
       end
     end
@@ -75,5 +75,5 @@ def knight_moves(start, finish)
 
 end
 
-knight_graph = KnightGraph.new([1, 1], [0, 6])
+knight_graph = KnightGraph.new([7, 0], [0, 7])
 p knight_graph.bfs
