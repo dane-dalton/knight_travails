@@ -1,6 +1,8 @@
 class Square
 
-  attr_accessor :position, :moves, :parent
+  attr_reader :position
+
+  attr_accessor :moves, :parent
 
   def initialize(position)
     @position = position
@@ -11,7 +13,9 @@ end
 
 class KnightGraph
 
-  attr_accessor :graph, :start , :finish
+  attr_reader :start, :finish
+
+  attr_accessor :graph
 
   @@ALL_MOVES = [[2, -1], [2, 1], [1, 2], [1, -2],[-1, 2], [-1, -2], [-2, 1], [-2, -1]]
 
@@ -20,6 +24,21 @@ class KnightGraph
     @start = start
     @finish = finish
   end
+
+  def sequence
+    fast_sequence = []
+    fast_sequence << self.bfs
+
+    fast_sequence.each do |move|
+      fast_sequence << move.parent unless move.parent == nil
+    end
+
+    puts "Find the moves for a knight to get from square #{self.start} to square #{self.finish}: "
+    fast_sequence.reverse_each { |move| puts "#{move.position}" }
+    puts "The fastest sequence takes #{fast_sequence.length - 1} moves."
+  end
+
+  private
 
   #Most number of moves needed is 6. It is temporally expensive to search more moves than this.
   def move_set(start_move, counter = 6)
@@ -47,21 +66,6 @@ class KnightGraph
     end
     return square
   end
-
-  def sequence
-    fast_sequence = []
-    fast_sequence << self.bfs
-
-    fast_sequence.each do |move|
-      fast_sequence << move.parent unless move.parent == nil
-    end
-
-    puts "Find the moves for a knight to get from square #{self.start} to square #{self.finish}: "
-    fast_sequence.reverse_each { |move| puts "#{move.position}" }
-    puts "The fastest sequence takes #{fast_sequence.length - 1} moves."
-  end
-
-  private
 
     def bfs 
       queue = []
