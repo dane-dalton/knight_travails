@@ -17,7 +17,7 @@ class KnightGraph
 
   attr_accessor :graph
 
-  @@ALL_MOVES = [[2, -1], [2, 1], [1, 2], [1, -2],[-1, 2], [-1, -2], [-2, 1], [-2, -1]]
+  @@ALL_MOVES = [[2, -1], [2, 1], [1, 2], [1, -2], [-1, 2], [-1, -2], [-2, 1], [-2, -1]]
 
   def initialize(start, finish)
     @graph = move_set(start)
@@ -26,46 +26,52 @@ class KnightGraph
   end
 
   def sequence
-    fast_sequence = []
-    fast_sequence << self.bfs
-
-    fast_sequence.each do |move|
-      fast_sequence << move.parent unless move.parent == nil
-    end
-
-    puts "Find the moves for a knight to get from square #{self.start} to square #{self.finish}: "
-    fast_sequence.reverse_each { |move| puts "#{move.position}" }
-    puts "The fastest sequence takes #{fast_sequence.length - 1} moves."
+    knight_sequence = []
+    knight_sequence << self.bfs
+    knight_sequence = trace_last_move_to_first_move(knight_sequence)
+    print_sequence(knight_sequence)
   end
 
   private
 
-  #Most number of moves needed is 6. It is temporally expensive to search more moves than this.
-  def move_set(start_move, counter = 6)
-    return Square.new(start_move) if start_move == self.finish
-    return Square.new(start_move) if counter == 0
-    counter -= 1
-    square = Square.new(start_move)
-    valid_moves = []
-    @@ALL_MOVES.each do |move|
-      add_x = move[0] + start_move[0]
-      add_y = move[1] + start_move[1]
-      if (add_x >= 1 && add_x < 9 && add_y >= 1 && add_y < 9)
-        valid_moves << [add_x, add_y]
+    def trace_last_move_to_first_move(knight_sequence)
+      knight_sequence.each do |move|
+        knight_sequence << move.parent unless move.parent == nil
       end
     end
 
-    valid_moves.each do |move|
-      square.moves << move_set(move, counter)
+    def print_sequence(knight_sequence)
+      puts "Find the moves for a knight to get from square #{self.start} to square #{self.finish}: "
+      knight_sequence.reverse_each { |move| puts "#{move.position}" }
+      puts "The fastest sequence takes #{knight_sequence.length - 1} moves."
     end
-    
-    unless square.moves[0].is_a?(Array)
-      square.moves.each do |move|
-        move.parent = square
+
+    #Most number of moves needed is 6. It is temporally expensive to search more moves than this.
+    def move_set(start_move, counter = 6)
+      return Square.new(start_move) if start_move == self.finish
+      return Square.new(start_move) if counter == 0
+      counter -= 1
+      square = Square.new(start_move)
+      valid_moves = []
+      @@ALL_MOVES.each do |move|
+        add_x = move[0] + start_move[0]
+        add_y = move[1] + start_move[1]
+        if (add_x >= 1 && add_x < 9 && add_y >= 1 && add_y < 9)
+          valid_moves << [add_x, add_y]
+        end
       end
+
+      valid_moves.each do |move|
+        square.moves << move_set(move, counter)
+      end
+      
+      unless square.moves[0].is_a?(Array)
+        square.moves.each do |move|
+          move.parent = square
+        end
+      end
+      return square
     end
-    return square
-  end
 
     def bfs 
       queue = []
