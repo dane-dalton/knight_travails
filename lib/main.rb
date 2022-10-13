@@ -28,7 +28,7 @@ class KnightGraph
   def sequence
     knight_sequence = []
     knight_sequence << self.bfs
-    knight_sequence = trace_last_move_to_first_move(knight_sequence)
+    trace_last_move_to_first_move(knight_sequence)
     print_sequence(knight_sequence)
   end
 
