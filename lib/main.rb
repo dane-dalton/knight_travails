@@ -66,25 +66,26 @@ class KnightGraph
     def bfs 
       queue = []
       queue << @graph
+      return bfs_first_finish(queue)
+    end
 
-      queue.each do |square|
-        square.moves.each do |move|
+    def bfs_first_finish(queue)
+      queue.each do |square_in_queue|
+        square_in_queue.moves.each do |move|
           return move if move.position == self.finish
           queue << move
         end
       end
-
-      return nil
     end
 end
 
-def knight_moves(start, finish)
-  knight_graph = KnightGraph.new(start, finish)
+def knight_moves(starting_square, ending_square)
+  knight_graph = KnightGraph.new(starting_square, ending_square)
   knight_graph.sequence
 end
 
-square_a = [1, 2]
+starting_square = [1, 2]
 
-square_b = [7, 8]
+ending_square = [8, 7]
 
-knight_moves(square_a, square_b)
+knight_moves(starting_square, ending_square)
