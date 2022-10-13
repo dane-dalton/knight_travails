@@ -12,6 +12,7 @@ class KnightGraph
     @graph = move_set(start)
     @start = start
     @finish = finish
+    self.sequence
   end
 
   def sequence
