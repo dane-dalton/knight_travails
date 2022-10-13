@@ -1,5 +1,6 @@
 require_relative 'square.rb'
 
+#This class is initialized with a starting and ending move on a chess board, for a knight to traverse. It will create an undirected graph and find the quickest path for the knight to travel from Point A to Point B.
 class KnightGraph
 
   attr_reader :start, :finish
@@ -15,14 +16,14 @@ class KnightGraph
     self.sequence
   end
 
-  def sequence
-    knight_sequence = []
-    knight_sequence << self.bfs
-    trace_last_move_to_first_move(knight_sequence)
-    print_sequence(knight_sequence)
-  end
-
   private
+
+    def sequence
+      knight_sequence = []
+      knight_sequence << self.bfs
+      trace_last_move_to_first_move(knight_sequence)
+      print_sequence(knight_sequence)
+    end
 
     def trace_last_move_to_first_move(knight_sequence)
       knight_sequence.each do |move|
