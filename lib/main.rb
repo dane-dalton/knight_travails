@@ -21,6 +21,7 @@ class KnightGraph
     @finish = finish
   end
 
+  #Most number of moves needed is 6. It is temporally expensive to search more moves than this.
   def move_set(start_move, counter = 6)
     return Square.new(start_move) if start_move == self.finish
     return Square.new(start_move) if counter == 0
@@ -30,7 +31,7 @@ class KnightGraph
     @@ALL_MOVES.each do |move|
       add_x = move[0] + start_move[0]
       add_y = move[1] + start_move[1]
-      if (add_x >= 0 && add_x < 8 && add_y >= 0 && add_y < 8)
+      if (add_x >= 1 && add_x < 9 && add_y >= 1 && add_y < 9)
         valid_moves << [add_x, add_y]
       end
     end
@@ -47,20 +48,6 @@ class KnightGraph
     return square
   end
 
-  def bfs 
-    queue = []
-    queue << @graph
-
-    queue.each do |square|
-      square.moves.each do |move|
-        return move if move.position == self.finish
-        queue << move
-      end
-    end
-
-    return nil
-  end
-
   def sequence
     fast_sequence = []
     fast_sequence << self.bfs
@@ -73,6 +60,22 @@ class KnightGraph
     fast_sequence.reverse_each { |move| puts "#{move.position}" }
     puts "The fastest sequence takes #{fast_sequence.length - 1} moves."
   end
+
+  private
+
+    def bfs 
+      queue = []
+      queue << @graph
+
+      queue.each do |square|
+        square.moves.each do |move|
+          return move if move.position == self.finish
+          queue << move
+        end
+      end
+
+      return nil
+    end
 end
 
 def knight_moves(start, finish)
@@ -80,8 +83,8 @@ def knight_moves(start, finish)
   knight_graph.sequence
 end
 
-square_a = [0, 1]
+square_a = [1, 2]
 
-square_b = [6, 7]
+square_b = [7, 8]
 
 knight_moves(square_a, square_b)
