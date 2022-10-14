@@ -21,9 +21,7 @@ class RunMoves
   private
     def knight_bfs
       until @knight_square.position == @ending_square
-        @knight_square.get_moves.each do |move|
-          queue << BoardSquare.new(move, @knight_square)
-        end
+        @knight_square.get_moves.each { |move| queue << BoardSquare.new(move, @knight_square) }
         @knight_square = @queue.shift #ruby's version of dequeue
       end
     end

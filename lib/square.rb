@@ -3,6 +3,7 @@ class BoardSquare
   attr_reader :position, :parent
 
   ALL_MOVES = [[2, -1], [2, 1], [1, 2], [1, -2], [-1, 2], [-1, -2], [-2, 1], [-2, -1]]
+  
   BOARD_SIZE = [1, 8]
 
   def initialize(position, parent = nil)
