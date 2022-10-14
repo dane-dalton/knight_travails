@@ -7,7 +7,8 @@ class KnightGraph
 
   attr_accessor :graph
 
-  @@ALL_MOVES = [[2, -1], [2, 1], [1, 2], [1, -2], [-1, 2], [-1, -2], [-2, 1], [-2, -1]]
+  ALL_MOVES = [[2, -1], [2, 1], [1, 2], [1, -2], [-1, 2], [-1, -2], [-2, 1], [-2, -1]]
+  BOARD_SIZE = [1, 8]
 
   def initialize(start, finish)
     @graph = move_set(start)
@@ -20,9 +21,9 @@ class KnightGraph
 
     #Finds every valid move a knight could make, and creates a new node(Square) for each move. Most number of moves needed is 6. It is temporally expensive to search more moves than this.
     def move_set(start_move, counter = 6)
-      return Square.new(start_move) if (start_move == self.finish || counter == 0)
+      return BoardSquare.new(start_move) if (start_move == self.finish || counter == 0)
       counter -= 1
-      square = Square.new(start_move)
+      square = BoardSquare.new(start_move)
       valid_moves = []
       add_moves(start_move, valid_moves)
       move_recursion_call(square, valid_moves, counter)

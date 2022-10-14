@@ -1,4 +1,4 @@
-class Square
+class BoardSquare
 
   attr_reader :position
 
